@@ -1,0 +1,7 @@
+# Request
+string robot_id  # Robot ID to query
+---
+# Response
+cofetch_msgs/RobotStatus status  # Robot status
+bool success  # Whether the request was successful
+string message  # Response message

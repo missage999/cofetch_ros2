@@ -1,0 +1,14 @@
+# Goal
+string object_id  # ID of the object to place
+geometry_msgs/Point target_position  # Target position to place the object
+geometry_msgs/Quaternion target_orientation  # Target orientation to place the object
+float32 timeout  # Place timeout in seconds
+---
+# Feedback
+float32 progress  # Place progress (0.0-1.0)
+string status_message  # Status message
+---
+# Result
+bool success  # Whether place was successful
+string message  # Result message
+string object_id  # ID of the placed object

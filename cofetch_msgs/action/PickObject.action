@@ -1,0 +1,12 @@
+# Goal
+string object_id  # ID of the object to pick
+float32 timeout  # Pick timeout in seconds
+---
+# Feedback
+float32 progress  # Pick progress (0.0-1.0)
+string status_message  # Status message
+---
+# Result
+bool success  # Whether pick was successful
+string message  # Result message
+string object_id  # ID of the picked object

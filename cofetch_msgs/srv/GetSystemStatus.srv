@@ -1,0 +1,7 @@
+# Request
+# No request parameters
+---
+# Response
+cofetch_msgs/SystemStatus status  # System status
+bool success  # Whether the request was successful
+string message  # Response message

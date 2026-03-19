@@ -1,0 +1,7 @@
+# Request
+string config_key  # Configuration key to set
+string config_value  # Configuration value to set
+---
+# Response
+bool success  # Whether the request was successful
+string message  # Response message
