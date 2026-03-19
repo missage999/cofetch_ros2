@@ -1,0 +1,32 @@
+cofetch_ros2:
+  perception:
+    object_detection:
+      enabled: true
+      confidence_threshold: 0.7
+      target_colors: ["red", "green", "blue"]
+      target_shapes: ["box", "cylinder", "sphere"]
+
+    color_detection:
+      red:
+        hsv_lower: [0, 100, 100]
+        hsv_upper: [10, 255, 255]
+      green:
+        hsv_lower: [40, 100, 100]
+        hsv_upper: [80, 255, 255]
+      blue:
+        hsv_lower: [100, 100, 100]
+        hsv_upper: [130, 255, 255]
+
+    shape_detection:
+      min_contour_area: 500
+      shape_tolerance: 0.1
+
+    object_tracking:
+      tracking_enabled: true
+      max_tracking_distance: 2.0
+      tracking_timeout: 5.0
+
+    camera:
+      debounce_time: 0.5
+      image_processing_rate: 10.0
+      depth_image_enabled: true

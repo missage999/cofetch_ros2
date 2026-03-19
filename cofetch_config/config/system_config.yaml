@@ -1,0 +1,22 @@
+cofetch_ros2:
+  system:
+    log_level: "info"
+    enable_monitoring: true
+    enable_performance_profiling: false
+
+  communication:
+    robot_to_robot: true
+    broadcast_interval: 1.0
+    heartbeat_timeout: 5.0
+
+  safety:
+    emergency_stop_enabled: true
+    collision_checking: true
+    max_runtime: 7200
+
+  topics:
+    robot_status: "/robot_status"
+    task_list: "/tasks"
+    object_list: "/objects"
+    nav_status: "/navigation/status"
+    exploration_status: "/exploration/status"

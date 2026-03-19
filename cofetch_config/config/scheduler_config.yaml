@@ -1,0 +1,40 @@
+cofetch_ros2:
+  scheduler:
+    task_generation:
+      enabled: true
+      auto_generation: true
+      priority_rules:
+        - type: "color_priority"
+          priorities:
+            red: 3
+            green: 2
+            blue: 1
+
+    task_assignment:
+      strategy: "nearest_robot"
+      load_balancing: true
+      reassignment_enabled: true
+      max_tasks_per_robot: 5
+
+    task_status:
+      check_interval: 1.0
+      failure_timeout: 60.0
+      max_retries: 3
+
+  manipulation:
+    grasping:
+      approach_distance: 0.1
+      retreat_distance: 0.15
+      grasp_force: 5.0
+      grasp_timeout: 10.0
+
+    arm_control:
+      max_velocity: 0.5
+      max_acceleration: 1.0
+      planning_timeout: 5.0
+      max_planning_attempts: 3
+
+    object_placement:
+      placement_height_offset: 0.02
+      placement_tolerance: 0.02
+      release_force: 2.0

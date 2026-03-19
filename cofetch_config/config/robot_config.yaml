@@ -1,0 +1,43 @@
+cofetch_ros2:
+  robot:
+    name_prefix: "cofetch_robot"
+    namespace: "/"
+    num_robots: 2
+    initial_positions:
+      robot1: [0.0, 0.0, 0.0]
+      robot2: [2.0, 2.0, 0.0]
+
+  robot_model:
+    chassis: "turtlebot4"
+    arm: "custom_2dof"
+    gripper: "parallel_gripper"
+
+    arm:
+      base_height: 0.05
+      base_radius: 0.04
+      link1_length: 0.1
+      link2_length: 0.15
+      joint1_limits: [-3.14159, 3.14159]
+      joint2_limits: [-1.5708, 1.5708]
+
+    gripper:
+      max_opening: 0.03
+      max_force: 10.0
+
+  sensors:
+    lidar:
+      topic: "/scan"
+      frame_id: "rplidar_link"
+      min_range: 0.12
+      max_range: 12.0
+      scan_time: 0.1
+
+    camera:
+      topic: "/color/preview/image"
+      frame_id: "oakd_rgb_camera_optical_frame"
+      width: 640
+      height: 480
+
+    imu:
+      topic: "/imu"
+      frame_id: "imu_link"

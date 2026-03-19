@@ -1,0 +1,28 @@
+turtlebot4_hq:
+  ros__parameters:
+    use_sim_time: true
+    scan:
+      topic: /scan
+      frame_id: rplidar_link
+      time_increment: 0.0
+      angle_increment: 0.0
+      min_range: 0.12
+      max_range: 12.0
+
+    oakd:
+      rgb_camera:
+        topic: /color/preview/image
+        frame_id: oakd_rgb_camera_optical_frame
+      depth_camera:
+        topic: /stereo/image
+        frame_id: oakd_left_camera_optical_frame
+
+robot_state_publisher:
+  ros__parameters:
+    use_sim_time: true
+    publish_frequency: 30.0
+
+joint_state_publisher:
+  ros__parameters:
+    use_sim_time: true
+    publish_frequency: 30.0

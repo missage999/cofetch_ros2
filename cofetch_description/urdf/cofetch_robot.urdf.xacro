@@ -1,0 +1,252 @@
+<?xml version="1.0"?>
+<robot name="cofetch_robot" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find turtlebot4_description)/urdf/standard/turtlebot4.urdf.xacro" />
+
+  <xacro:property name="arm_x_offset" value="0.15"/>
+  <xacro:property name="arm_y_offset" value="0"/>
+  <xacro:property name="arm_z_offset" value="0.30"/>
+
+  <xacro:property name="arm_base_height" value="0.05"/>
+  <xacro:property name="arm_base_radius" value="0.04"/>
+  <xacro:property name="arm_base_mass" value="0.5"/>
+
+  <link name="arm_base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="${arm_base_radius}" length="${arm_base_height}"/>
+      </geometry>
+      <material name="grey">
+        <color rgba="0.5 0.5 0.5 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="${arm_base_radius}" length="${arm_base_height}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="${arm_base_mass}"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="arm_base_link">
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <joint name="arm_base_joint" type="fixed">
+    <parent link="shell_link"/>
+    <child link="arm_base_link"/>
+    <origin xyz="${arm_x_offset} ${arm_y_offset} ${arm_z_offset}" rpy="0 0 0"/>
+  </joint>
+
+  <link name="arm_link_1">
+    <visual>
+      <origin xyz="0 0 0.05" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.02" length="0.1"/>
+      </geometry>
+      <material name="orange">
+        <color rgba="1.0 0.5 0.0 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.05" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.02" length="0.1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.3"/>
+      <origin xyz="0 0 0.05" rpy="0 0 0"/>
+      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="arm_link_1">
+    <material>Gazebo/Orange</material>
+  </gazebo>
+
+  <joint name="arm_joint_1" type="revolute">
+    <parent link="arm_base_link"/>
+    <child link="arm_link_1"/>
+    <origin xyz="0 0 ${arm_base_height}" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14159" upper="3.14159" effort="100" velocity="1.0"/>
+  </joint>
+
+  <link name="arm_link_2">
+    <visual>
+      <origin xyz="0 0 0.075" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.018" length="0.15"/>
+      </geometry>
+      <material name="orange">
+        <color rgba="1.0 0.5 0.0 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.075" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.018" length="0.15"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.2"/>
+      <origin xyz="0 0 0.075" rpy="0 0 0"/>
+      <inertia ixx="0.0005" ixy="0" ixz="0" iyy="0.0005" iyz="0" izz="0.0005"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="arm_link_2">
+    <material>Gazebo/Orange</material>
+  </gazebo>
+
+  <joint name="arm_joint_2" type="revolute">
+    <parent link="arm_link_1"/>
+    <child link="arm_link_2"/>
+    <origin xyz="0 0 0.1" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.5708" upper="1.5708" effort="100" velocity="1.0"/>
+  </joint>
+
+  <link name="gripper_base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.04 0.06 0.02"/>
+      </geometry>
+      <material name="darkgrey">
+        <color rgba="0.3 0.3 0.3 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.04 0.06 0.02"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.1"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="gripper_base_link">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+
+  <joint name="gripper_base_joint" type="fixed">
+    <parent link="arm_link_2"/>
+    <child link="gripper_base_link"/>
+    <origin xyz="0 0 0.15" rpy="0 0 0"/>
+  </joint>
+
+  <link name="gripper_left_link">
+    <visual>
+      <origin xyz="0 0.015 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.01 0.03 0.02"/>
+      </geometry>
+      <material name="black">
+        <color rgba="0.1 0.1 0.1 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0.015 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.01 0.03 0.02"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.02"/>
+      <origin xyz="0 0.015 0" rpy="0 0 0"/>
+      <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="gripper_left_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <joint name="gripper_left_joint" type="prismatic">
+    <parent link="gripper_base_link"/>
+    <child link="gripper_left_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="0" upper="0.03" effort="10" velocity="0.5"/>
+  </joint>
+
+  <link name="gripper_right_link">
+    <visual>
+      <origin xyz="0 -0.015 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.01 0.03 0.02"/>
+      </geometry>
+      <material name="black">
+        <color rgba="0.1 0.1 0.1 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 -0.015 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.01 0.03 0.02"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.02"/>
+      <origin xyz="0 -0.015 0" rpy="0 0 0"/>
+      <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="gripper_right_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <joint name="gripper_right_joint" type="prismatic">
+    <parent link="gripper_base_link"/>
+    <child link="gripper_right_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 -1 0"/>
+    <limit lower="0" upper="0.03" effort="10" velocity="0.5"/>
+  </joint>
+
+  <link name="gripper_tip_link">
+    <visual>
+      <origin xyz="0 0 -0.015" rpy="0 0 0"/>
+      <geometry>
+        <sphere radius="0.01"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0.0 0.0 1.0 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.015" rpy="0 0 0"/>
+      <geometry>
+        <sphere radius="0.01"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.01"/>
+      <origin xyz="0 0 -0.015" rpy="0 0 0"/>
+      <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="gripper_tip_link">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+
+  <joint name="gripper_tip_joint" type="fixed">
+    <parent link="gripper_base_link"/>
+    <child link="gripper_tip_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+</robot>

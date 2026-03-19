@@ -1,0 +1,26 @@
+cofetch_ros2:
+  navigation:
+    pure_pursuit:
+      enabled: true
+      lookahead_distance: 0.5
+      target_velocity: 0.3
+      max_angular_velocity: 1.5
+      goal_tolerance: 0.1
+
+    obstacle_avoidance:
+      enabled: true
+      safety_distance: 0.3
+      obstacle_detection_range: 1.0
+      recovery_behavior: "turn_in_place"
+
+    robot:
+      max_linear_velocity: 0.5
+      max_angular_velocity: 1.5
+      acceleration_limit: 1.0
+      deceleration_limit: 2.0
+
+    path_planning:
+      planner: "navfn"
+      planning_timeout: 5.0
+      replanning_enabled: true
+      replanning_interval: 2.0

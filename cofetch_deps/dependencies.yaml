@@ -1,0 +1,86 @@
+dependencies:
+  system:
+    - name: "Ubuntu 24.04"
+      required: true
+      description: "Linux distribution"
+
+  ros:
+    - name: "ros-jazzy-desktop"
+      required: true
+      description: "ROS2 Jazzy desktop installation"
+      install_cmd: "apt-get install -y ros-jazzy-desktop"
+
+  robot:
+    - name: "turtlebot4_description"
+      required: true
+      description: "TurtleBot4 robot description"
+      ros_distro: "jazzy"
+      install_cmd: "apt-get install -y ros-jazzy-turtlebot4-description"
+
+    - name: "irobot_create_description"
+      required: true
+      description: "iRobot Create3 robot description"
+      ros_distro: "jazzy"
+      install_cmd: "apt-get install -y ros-jazzy-irobot-create-description"
+
+    - name: "turtlebot4_msgs"
+      required: true
+      description: "TurtleBot4 messages"
+      ros_distro: "jazzy"
+      install_cmd: "apt-get install -y ros-jazzy-turtlebot4-msgs"
+
+  simulation:
+    - name: "ros_gz_sim"
+      required: true
+      description: "Gazebo Harmonic simulator"
+      ros_distro: "jazzy"
+      install_cmd: "apt-get install -y ros-jazzy-ros-gz-sim"
+
+    - name: "ros_gz_bridge"
+      required: true
+      description: "ROS2 Gazebo bridge"
+      ros_distro: "jazzy"
+      install_cmd: "apt-get install -y ros-jazzy-ros-gz-bridge"
+
+    - name: "ros_gz_image"
+      required: true
+      description: "ROS2 Gazebo image bridge"
+      ros_distro: "jazzy"
+      install_cmd: "apt-get install -y ros-jazzy-ros-gz-image"
+
+  navigation:
+    - name: "navigation2"
+      required: false
+      description: "ROS2 Navigation2 stack"
+      ros_distro: "jazzy"
+      install_cmd: "apt-get install -y ros-jazzy-navigation2"
+
+    - name: "nav2_bringup"
+      required: false
+      description: "Navigation2 bringup"
+      ros_distro: "jazzy"
+      install_cmd: "apt-get install -y ros-jazzy-nav2-bringup"
+
+  perception:
+    - name: "image_pipeline"
+      required: false
+      description: "Image processing pipeline"
+      ros_distro: "jazzy"
+      install_cmd: "apt-get install -y ros-jazzy-image-pipeline"
+
+    - name: "vision_opencv"
+      required: false
+      description: "OpenCV vision packages"
+      ros_distro: "jazzy"
+      install_cmd: "apt-get install -y ros-jazzy-vision-opencv"
+
+  tools:
+    - name: "python3-yaml"
+      required: true
+      description: "PyYAML for Python"
+      install_cmd: "apt-get install -y python3-yaml"
+
+    - name: "python3-pip"
+      required: true
+      description: "Python pip"
+      install_cmd: "apt-get install -y python3-pip"
