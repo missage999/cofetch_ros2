@@ -20,9 +20,7 @@ ARGUMENTS = [
 
 def generate_launch_description():
     pkg_cofetch_desc = get_package_share_directory('cofetch_description')
-    pkg_turtlebot4 = get_package_share_directory('turtlebot4_description')
     pkg_irobot = get_package_share_directory('irobot_create_description')
-    pkg_nav2_minimal = get_package_share_directory('nav2_minimal_tb4_description')
 
     xacro_file = PathJoinSubstitution([
         pkg_cofetch_desc,
@@ -40,7 +38,7 @@ def generate_launch_description():
     robot_name = LaunchConfiguration('robot_name')
     namespace = LaunchConfiguration('namespace')
 
-    model_paths = f"{pkg_cofetch_desc}/worlds:{pkg_turtlebot4}/meshes:{pkg_irobot}/meshes:{pkg_nav2_minimal}/meshes"
+    model_paths = f"{pkg_cofetch_desc}/worlds:{pkg_irobot}/meshes"
 
     set_env_vars = [
         SetEnvironmentVariable('GZ_SIM_RESOURCE_PATH', pkg_cofetch_desc + '/worlds'),
