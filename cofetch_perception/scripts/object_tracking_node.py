@@ -86,12 +86,7 @@ class ObjectTrackingNode(Node):
             del self.last_update_time[obj_id]
 
     def publish_object_list(self):
-        header = Header()
-        header.stamp = self.get_clock().now().to_msg()
-        header.frame_id = 'camera_frame'
-
         object_list_msg = ObjectList()
-        object_list_msg.header = header
 
         for obj_id, obj_data in self.tracked_objects.items():
             obj_info = ObjectInfo()
