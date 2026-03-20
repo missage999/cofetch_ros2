@@ -2,18 +2,15 @@ from ament_index_python.packages import get_package_share_directory
 
 import os
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess, SetEnvironmentVariable
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, SetEnvironmentVariable, TimerAction
 from launch.substitutions import Command, LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
-from launch_ros.substitutions import ExecutableInPackage
 
 
 ARGUMENTS = [
     DeclareLaunchArgument('use_sim_time', default_value='true',
                           choices=['true', 'false'],
                           description='Use sim time'),
-    DeclareLaunchArgument('world_file', default_value='',
-                          description='Gazebo world file'),
     DeclareLaunchArgument('robot_name', default_value='cofetch_robot1',
                           description='Robot name'),
     DeclareLaunchArgument('namespace', default_value='/',
@@ -23,7 +20,9 @@ ARGUMENTS = [
 
 def generate_launch_description():
     pkg_cofetch_desc = get_package_share_directory('cofetch_description')
-    pkg_cofetch_gazebo = get_package_share_directory('cofetch_gazebo')
+    pkg_turtlebot4 = get_package_share_directory('turtlebot4_description')
+    pkg_irobot = get_package_share_directory('irobot_create_description')
+    pkg_nav2_minimal = get_package_share_directory('nav2_minimal_tb4_description')
 
     xacro_file = PathJoinSubstitution([
         pkg_cofetch_desc,
@@ -41,10 +40,11 @@ def generate_launch_description():
     robot_name = LaunchConfiguration('robot_name')
     namespace = LaunchConfiguration('namespace')
 
-    gazebo_models_path = os.path.join(pkg_cofetch_desc, 'worlds')
+    model_paths = f"{pkg_cofetch_desc}/worlds:{pkg_turtlebot4}/meshes:{pkg_irobot}/meshes:{pkg_nav2_minimal}/meshes"
 
     set_env_vars = [
-        SetEnvironmentVariable('GZ_SIM_RESOURCE_PATH', gazebo_models_path),
+        SetEnvironmentVariable('GZ_SIM_RESOURCE_PATH', pkg_cofetch_desc + '/worlds'),
+        SetEnvironmentVariable('GZ_SIM_MODEL_PATH', model_paths),
     ]
 
     robot_state_publisher = Node(
@@ -55,15 +55,9 @@ def generate_launch_description():
         parameters=[{
             'use_sim_time': use_sim_time,
             'robot_description': Command([
-                'xacro ', xacro_file, ' ',
-                'gazebo:=ignition', ' ',
-                'namespace:=', namespace
+                'xacro ', xacro_file
             ]),
         }],
-        remappings=[
-            ('/tf', 'tf'),
-            ('/tf_static', 'tf_static')
-        ],
         namespace=namespace,
     )
 
@@ -73,32 +67,35 @@ def generate_launch_description():
         name='joint_state_publisher',
         output='screen',
         parameters=[{'use_sim_time': use_sim_time}],
-        remappings=[
-            ('/tf', 'tf'),
-            ('/tf_static', 'tf_static')
-        ],
         namespace=namespace,
     )
-
-    gz_sim_pkg = get_package_share_directory('ros_gz_sim')
 
     gz_sim = ExecuteProcess(
         cmd=['gz', 'sim', '-r', world_file],
         output='screen',
-        additional_env={'GZ_SIM_RESOURCE_PATH': gazebo_models_path},
+        additional_env={
+            'GZ_SIM_RESOURCE_PATH': pkg_cofetch_desc + '/worlds',
+            'GZ_SIM_MODEL_PATH': model_paths,
+        },
     )
 
-    spawn_entity = Node(
-        package='ros_gz_sim',
-        executable='create',
-        name='spawn_entity',
-        output='screen',
-        arguments=[
-            '-name', robot_name,
-            '-file', xacro_file,
-            '-x', '0', '-y', '0', '-z', '0',
-        ],
-        parameters=[{'use_sim_time': use_sim_time}],
+    delayed_spawn = TimerAction(
+        period=5.0,
+        actions=[
+            Node(
+                package='ros_gz_sim',
+                executable='create',
+                name='spawn_entity',
+                output='screen',
+                arguments=[
+                    '-name', robot_name,
+                    '-topic', 'robot_description',
+                    '-x', '0', '-y', '0', '-z', '0',
+                    '-namespace', namespace,
+                ],
+                parameters=[{'use_sim_time': use_sim_time}],
+            )
+        ]
     )
 
     ld = LaunchDescription(ARGUMENTS)
@@ -107,6 +104,6 @@ def generate_launch_description():
     ld.add_action(robot_state_publisher)
     ld.add_action(joint_state_publisher)
     ld.add_action(gz_sim)
-    ld.add_action(spawn_entity)
+    ld.add_action(delayed_spawn)
 
     return ld
